@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abriendo en groci…</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0a0a; color: #fff;
+      margin: 0; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+    }
+    .card { max-width: 360px; }
+    h1 { font-size: 22px; margin: 0 0 8px; color: #22c55e; }
+    p  { font-size: 15px; color: #a1a1aa; line-height: 1.5; margin: 0 0 24px; }
+    .btn {
+      display: inline-block; background: #22c55e; color: #fff;
+      text-decoration: none; padding: 14px 24px; border-radius: 12px;
+      font-weight: 700; font-size: 15px;
+    }
+    .secondary {
+      display: block; color: #a1a1aa; text-decoration: underline;
+      margin-top: 16px; font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Abriendo lista compartida…</h1>
+    <p>Si tienes groci instalado, la lista se abrirá automáticamente.<br>Si no, descarga la app desde Google Play.</p>
+    <a id="store-btn" class="btn" href="https://play.google.com/store/apps/details?id=app.groci">
+      Descargar groci
+    </a>
+    <a id="manual-btn" class="secondary" href="#">¿No se abrió? Toca aquí</a>
+  </div>
+
+  <script>
+    (function () {
+      var path = window.location.pathname;
+      var match = path.match(/\/l\/([^/?#]+)/);
+      var token = match ? match[1] : null;
+      if (!token) return;
+
+      var ua = navigator.userAgent || '';
+      var isAndroid = /Android/i.test(ua);
+      var isIOS = /iPad|iPhone|iPod/i.test(ua);
+
+      var schemeUrl = 'groci://l/' + token;
+      var androidIntent =
+        'intent://l/' + token +
+        '#Intent;scheme=groci;package=app.groci;' +
+        'S.browser_fallback_url=' + encodeURIComponent('https://play.google.com/store/apps/details?id=app.groci') +
+        ';end';
+
+      var manualUrl = isAndroid ? androidIntent : schemeUrl;
+      document.getElementById('manual-btn').href = manualUrl;
+
+      if (isAndroid || isIOS) {
+        // Try to open the app immediately. If not installed:
+        //  - Android: the intent's browser_fallback_url sends them to Play Store.
+        //  - iOS: nothing happens, the user sees the page and can tap "Descargar groci".
+        window.location.href = manualUrl;
+      }
+    })();
+  </script>
+</body>
+</html>
