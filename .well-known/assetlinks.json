@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.groci",
+      "sha256_cert_fingerprints": [
+        "19:6D:92:63:98:93:EC:47:61:43:92:07:1B:59:42:0C:24:67:D2:E8:B4:E0:8F:40:31:1F:B7:B4:81:5B:58:E6"
+      ]
+    }
+  }
+]
